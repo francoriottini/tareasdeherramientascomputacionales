@@ -1,0 +1,54 @@
+- Java, C++ and Python are all object-oriented programming languages.
+- We can run Pytjon from the command prompt using "python".
+- We can use "pass" in any place in Python code to tell interpreter “to do nothing” and move to next instruction.
+- Python 3 is a newer version, but it is not backward compatible with Python 2.
+- To run python script file named test.py, use the command python test.py (from the command prompt).
+- PyChecker and Pylint are tools that help us find bugs.
+- In Python, 'Hello', is the same as "Hello"-
+- Python was created by Guido van Rossum.
+- It's possible to check for more than one error in one except line if the exception types are enclosed in parentheses.
+- keywords can't be variables
+- __init__ can be a variable
+- Variable names have unlimited length 
+- open is not a keyword (but lambda is)
+- 1var can't be a variable
+- A variable shouldn't be declared before it is assigned a value
+- 79 is the maximum possible length of an identifier or an attribute !!
+- id() returns the unique number assigned to an object.
+- From the execution of the statements  n = 300,  m = n we create one object and two references. I thought it was two objects and two references, it was tricky
+- with j and J we define complex numbers
+- inf is float
+- 0.2 + 0.3 == 0.5 is True, I thought it was False
+- ~5 = 6?
+- tuples can be used for keys in dictionaries
+- trunc() returns an int
+- Boolean type is a subtype of Integer data type in Python
+- An interesting list of resources from the Strings one:
+	• .format()
+	• .expandtabs()
+	• .split()
+	• format("","")
+	• .swapcase()
+	• .partition('')
+	• .isidentifier()
+	• .center() ---------} didn't understand this
+	• .find("")
+	• .splitlines()
+	• .islower()
+	• .maketrans("", "") 
+	• .replace
+	• .title
+	• .count("", , )
+- From Sets: .isdisjoint(); .diference_update(); a1|a2 = a1.union(a2); 
+- From List: zip(), deepcopy() ?;
+- From Tuples: from collections .namedtuple; 
+- From Files:  
+	To read the entire remaining contents of the file as a string from a file object f, we use .read
+	To open a file c:\text.txt for writing, we use outfile = open(“c:\\test.txt”, “w”)
+	os.rename(old_file, new_name) to rename a file
+	os.remove(‘file’) to remove a file
+	The readlines() method returns a list of lines
+	
+
+
+
