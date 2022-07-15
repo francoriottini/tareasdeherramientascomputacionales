@@ -1,3 +1,5 @@
+ACTUALIZACIÓN: En releases se encuentran archivos con un tamaño mayor a 25mb.
+
 En este folder se encuentran los archivos adjuntos referentes al curso de la maestria en economia de UdeSA: 2022 PE1307 - HERRAMIENTAS COMPUTACIONALES PARA INVESTIGACIÓN dictado por la profesora PhD Amelia Gibbons (https://mgibbons3.github.io/).
 
 En la carpeta 1 se encuentran los archivos de homework referentes al tema 1: Python (27/6).
