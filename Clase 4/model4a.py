@@ -11,7 +11,7 @@ from qgis.core import QgsProcessingMultiStepFeedback
 from qgis.core import QgsProcessingParameterFeatureSink
 import processing
 
-
+# se establecen los parametros iniciales para la creacion del modelo 4a
 class Model4a(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
@@ -26,13 +26,13 @@ class Model4a(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
 
-        # Statistics by categories
+        # Calcula las estadísticas de un campo en función de una clase principal
         alg_params = {
-            'CATEGORIES_FIELD_NAME': ['ADMIN'],
+            'CATEGORIES_FIELD_NAME': ['ADMIN'], # los campos combinados definen las categorías
             'INPUT': 'Intersection_9368dc74_2d3a_4a25_a0e5_5a11925ea511',
             'OUTPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/output/laguages_by_country.csv',
-            'VALUES_FIELD_NAME': '',
-            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+            'VALUES_FIELD_NAME': '', # si está vacío solo se calcula el recuento
+            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT # tabla para las estadísticas generadas
         }
         outputs['StatisticsByCategories'] = processing.run('qgis:statisticsbycategories', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
 
@@ -40,10 +40,10 @@ class Model4a(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Fix geometries - countries
+        # Arregla geometrias. Crea una representación válida de una geometría no válidaa de los paises
         alg_params = {
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp',
-            'OUTPUT': parameters['Fixgeo_countries']
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp', # capa de vector de entrada
+            'OUTPUT': parameters['Fixgeo_countries'] # especifica la capa vectorial saliente
         }
         outputs['FixGeometriesCountries'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Fixgeo_countries'] = outputs['FixGeometriesCountries']['OUTPUT']
@@ -52,10 +52,10 @@ class Model4a(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Fix geometries - wlds
+        # Arregla geometrias. Crea una representación válida de una geometría no válidaa de wlds
         alg_params = {
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/clean.shp',
-            'OUTPUT': parameters['Fixgeo_wlds']
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/clean.shp', # capa de vector de entrada
+            'OUTPUT': parameters['Fixgeo_wlds'] # especifica la capa vectorial saliente
         }
         outputs['FixGeometriesWlds'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Fixgeo_wlds'] = outputs['FixGeometriesWlds']['OUTPUT']
@@ -64,19 +64,21 @@ class Model4a(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Intersection
+        # extrae las partes de entidades de la capa de entrada que se superponen a entidades en la capa de superposición
         alg_params = {
-            'INPUT': outputs['FixGeometriesWlds']['OUTPUT'],
-            'INPUT_FIELDS': ['GID'],
+            'INPUT': outputs['FixGeometriesWlds']['OUTPUT'], # capa de la que extraer entidades
+            'INPUT_FIELDS': ['GID'], # campos de la capa de entrada para mantener en la salida. Si no se elige ningún campo, se toman todos los campos
             'OVERLAY': outputs['FixGeometriesCountries']['OUTPUT'],
-            'OVERLAY_FIELDS': ['ADMIN'],
-            'OVERLAY_FIELDS_PREFIX': '',
-            'OUTPUT': parameters['Intersection']
+            'OVERLAY_FIELDS': ['ADMIN'], # campos de la capa de superposición para mantener en la salida. Si no se elige ningún campo, se toman todos los campos
+            'OVERLAY_FIELDS_PREFIX': '', # prefijo para agregar a los nombres de campo de los campos de la capa de intersección para evitar colisiones de nombres con campos en la capa de entrada
+            'OUTPUT': parameters['Intersection'] # especifique la capa para contener las partes de las entidades de la capa de entrada que se superponen a una o más entidades de la capa superpuesta.
         }
         outputs['Intersection'] = processing.run('native:intersection', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Intersection'] = outputs['Intersection']['OUTPUT']
         return results
-
+ 
+ # define elementos
+ 
     def name(self):
         return 'model4a'
 
