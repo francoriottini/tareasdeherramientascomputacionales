@@ -28,21 +28,21 @@ class Model1(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
 
-        # Combar (reproyectar)
+        # Reproyecta una capa vectorial en un SRC diferente
         alg_params = {
             'DATA_TYPE': 0,  # Usar el tipo de datos de la capa de entrada
             'EXTRA': '',
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/SUIT/suit/hdr.adf',
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/SUIT/suit/hdr.adf', # elige la capa vectorial entrante a reproyectar
             'MULTITHREADING': False,
             'NODATA': None,
             'OPTIONS': '',
-            'RESAMPLING': 0,  # Vecino más próximo
+            'RESAMPLING': 0,  # vecino más próximo
             'SOURCE_CRS': None,
-            'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:4326'),
+            'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:4326'), # sistema de coordenadas de referencia de destino
             'TARGET_EXTENT': None,
             'TARGET_EXTENT_CRS': None,
             'TARGET_RESOLUTION': None,
-            'OUTPUT': parameters['Agrisuit']
+            'OUTPUT': parameters['Agrisuit'] # especifica la capa vectorial saliente
         }
         outputs['CombarReproyectar'] = processing.run('gdal:warpreproject', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Agrisuit'] = outputs['CombarReproyectar']['OUTPUT']
@@ -95,6 +95,8 @@ class Model1(QgsProcessingAlgorithm):
         results['Zonal'] = outputs['EstadsticasDeZona']['OUTPUT']
         return results
 
+    
+ # define elementos
     def name(self):
         return 'model1'
 
