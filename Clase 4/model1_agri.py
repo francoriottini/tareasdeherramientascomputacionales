@@ -13,7 +13,7 @@ from qgis.core import QgsProcessingParameterFeatureSink
 from qgis.core import QgsCoordinateReferenceSystem
 import processing
 
-
+# se establecen los parametros iniciales para la creacion del modelo 1
 class Model1(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
