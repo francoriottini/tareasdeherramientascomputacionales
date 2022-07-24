@@ -51,7 +51,7 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Quitar campo(s)
+        # Quita las columnas nombradas de la forma '....' de la tabla
         alg_params = {
             'COLUMN': ['GID_0','NAME_0','GID_1','GID_2','HASC_2','CC_2','TYPE_2','NL_NAME 2','VARNAME_2','NL_NAME_1','NL_NAME_2',' ENGTYPE_2'],
             'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/gadm41_USA/gadm41_USA_2.shp',
