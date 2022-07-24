@@ -11,7 +11,7 @@ from qgis.core import QgsProcessingMultiStepFeedback
 from qgis.core import QgsProcessingParameterFeatureSink
 import processing
 
-
+# se establecen los parametros iniciales para la creacion del modelo 1
 class Model1(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
@@ -23,16 +23,15 @@ class Model1(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSink('Fix_geo', 'fix_geo', type=QgsProcessing.TypeVectorAnyGeometry, createByDefault=True, supportsAppend=True, defaultValue=None))
 
     def processAlgorithm(self, parameters, context, model_feedback):
-        # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
-        # overall progress through the model
+        # Use una retroalimentación de varios pasos progreso del algoritmo secundario se ajustan para el progreso general a través del modelo.
         feedback = QgsProcessingMultiStepFeedback(6, model_feedback)
         results = {}
         outputs = {}
 
-        # Filtro de entidad
+        # Filtra entidades de la capa de entrada y las redirige a una o varias salidas
         alg_params = {
-            'INPUT': 'Calculado_990564d8_40d0_4a61_97ed_24444685c928',
-            'OUTPUT_menor_a_11': parameters['Output_menor_a_11']
+            'INPUT': 'Calculado_990564d8_40d0_4a61_97ed_24444685c928',  # capa entrante
+            'OUTPUT_menor_a_11': parameters['Output_menor_a_11'] # las capas salientes con filtros
         }
         outputs['FiltroDeEntidad'] = processing.run('native:filter', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Output_menor_a_11'] = outputs['FiltroDeEntidad']['OUTPUT_menor_a_11']
@@ -43,13 +42,13 @@ class Model1(QgsProcessingAlgorithm):
 
         # Calculadora de campos
         alg_params = {
-            'FIELD_LENGTH': 2,
-            'FIELD_NAME': 'length',
-            'FIELD_PRECISION': 0,
-            'FIELD_TYPE': 1,  # Integer
-            'FORMULA': 'length(NAME_PROP)',
+            'FIELD_LENGTH': 2, # longitud del campo
+            'FIELD_NAME': 'length',  # nombre del campo para los resultados
+            'FIELD_PRECISION': 0, # precisión del campo
+            'FIELD_TYPE': 1,  #  tipo de campo en este caso entero
+            'FORMULA': 'length(NAME_PROP)', # fórmula para calcular el resultado
             'INPUT': 'Incrementado_4b4b4477_63a0_4701_85d0_dbbcf50acd3e',
-            'OUTPUT': parameters['Length']
+            'OUTPUT': parameters['Length'] # especificación de la capa saliente
         }
         outputs['CalculadoraDeCampos'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Length'] = outputs['CalculadoraDeCampos']['OUTPUT']
@@ -58,15 +57,15 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Calculadora de campos (clone)
+        # Calculadora de campos en forma de clone modificado
         alg_params = {
-            'FIELD_LENGTH': 10,
-            'FIELD_NAME': 'lnm',
-            'FIELD_PRECISION': 0,
-            'FIELD_TYPE': 2,  # String
-            'FORMULA': '"NAME_PROP"',
+            'FIELD_LENGTH': 10, # longitud del campo
+            'FIELD_NAME': 'lnm', # nombre del campo para los resultados
+            'FIELD_PRECISION': 0, # precisión del campo
+            'FIELD_TYPE': 2,  # #  tipo de campo en este caso cadena
+            'FORMULA': '"NAME_PROP"', # fórmula para calcular el resultado
             'INPUT': 'menor_a_11_c3a98596_fbb0_4d42_b3cf_531f4126d936',
-            'OUTPUT': parameters['Field_calc']
+            'OUTPUT': parameters['Field_calc'] # especificación de la capa saliente
         }
         outputs['CalculadoraDeCamposClone'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Field_calc'] = outputs['CalculadoraDeCamposClone']['OUTPUT']
@@ -75,7 +74,7 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Quitar campo(s)
+        # # Quita las columnas nombradas de la forma '....' de la tabla
         alg_params = {
             'COLUMN': ['ID_ISO_A3','ID_ISO_A2','ID_FIPS','NAM_LABEL','NAME_PROP','NAME2','NAM_ANSI','CNT','C1','POP','LMP_POP1','G','LMP_CLASS','FAMILYPROP','FAMILY','langpc_km2','length'],
             'INPUT': 'Calculado_1117a096_c00b_4dce_bfd4_23255054233d',
@@ -88,10 +87,10 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Corregir geometrías
+        # crea una representación válida de una geometría no válidaa
         alg_params = {
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/langa/langa/langa.shp',
-            'OUTPUT': parameters['Fix_geo']
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/langa/langa/langa.shp', # capa de vector de entrada
+            'OUTPUT': parameters['Fix_geo'] # especifica la capa vectorial saliente
         }
         outputs['CorregirGeometras'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Fix_geo'] = outputs['CorregirGeometras']['OUTPUT']
@@ -100,22 +99,23 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Agregar campo que auto-incrementa 
+        # Agregar campo autoincremental mediante una nueva capa
         alg_params = {
-            'FIELD_NAME': 'GID',
-            'GROUP_FIELDS': [''],
+            'FIELD_NAME': 'GID', # nombre del campo con valores autoincremental
+            'GROUP_FIELDS': [''], #elige los campos 
             'INPUT': outputs['CorregirGeometras']['OUTPUT'],
             'MODULUS': 0,
-            'SORT_ASCENDING': True,
-            'SORT_EXPRESSION': '',
-            'SORT_NULLS_FIRST': False,
+            'SORT_ASCENDING': True, # controla el orden en el que se asignan valores  
+            'SORT_EXPRESSION': '', # ordena las entidades de la capa de forma global
+            'SORT_NULLS_FIRST': False, # establece que los valores nulos se cuentan al final
             'START': 1,
-            'OUTPUT': parameters['Autoinc_id']
+            'OUTPUT': parameters['Autoinc_id'] # capa vectorial con campo autoincremental
         }
         outputs['AgregarCampoQueAutoincrementa'] = processing.run('native:addautoincrementalfield', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Autoinc_id'] = outputs['AgregarCampoQueAutoincrementa']['OUTPUT']
         return results
 
+     # define elementos
     def name(self):
         return 'model1'
 
