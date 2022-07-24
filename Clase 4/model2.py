@@ -12,7 +12,7 @@ from qgis.core import QgsProcessingParameterRasterDestination
 from qgis.core import QgsCoordinateReferenceSystem
 import processing
 
-
+# se establecen los parametros iniciales para la creacion del modelo 2
 class Model2(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
@@ -25,21 +25,21 @@ class Model2(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
 
-        # Combar (reproyectar)
+        # Reproyecta una capa vectorial en un SRC diferente
         alg_params = {
-            'DATA_TYPE': 0,  # Use Input Layer Data Type
+            'DATA_TYPE': 0,  # Usar el tipo de datos de la capa de entrada
             'EXTRA': '',
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/SUIT/suit/hdr.adf',
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/SUIT/suit/hdr.adf', # elige la capa vectorial entrante a reproyectar
             'MULTITHREADING': False,
             'NODATA': None,
             'OPTIONS': '',
-            'RESAMPLING': 0,  # Nearest Neighbour
+            'RESAMPLING': 0,  # vecino más próximo
             'SOURCE_CRS': None,
             'TARGET_CRS': QgsCoordinateReferenceSystem('EPSG:4326'),
             'TARGET_EXTENT': None,
             'TARGET_EXTENT_CRS': None,
             'TARGET_RESOLUTION': None,
-            'OUTPUT': parameters['Suitout']
+            'OUTPUT': parameters['Suitout'] # especifica la capa vectorial saliente
         }
         outputs['CombarReproyectar'] = processing.run('gdal:warpreproject', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Suitout'] = outputs['CombarReproyectar']['OUTPUT']
@@ -48,14 +48,14 @@ class Model2(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Extraer proyección
+        # Extrae la proyección
         alg_params = {
             'INPUT': outputs['CombarReproyectar']['OUTPUT'],
             'PRJ_FILE_CREATE': True
         }
         outputs['ExtraerProyeccin'] = processing.run('gdal:extractprojection', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         return results
-
+# define elementos
     def name(self):
         return 'model2'
 
