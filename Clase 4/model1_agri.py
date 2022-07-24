@@ -54,7 +54,7 @@ class Model1(QgsProcessingAlgorithm):
         # Quita las columnas nombradas de la forma '....' de la tabla
         alg_params = {
             'COLUMN': ['GID_0','NAME_0','GID_1','GID_2','HASC_2','CC_2','TYPE_2','NL_NAME 2','VARNAME_2','NL_NAME_1','NL_NAME_2',' ENGTYPE_2'],
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/gadm41_USA/gadm41_USA_2.shp',
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/gadm41_USA/gadm41_USA_2.shp', # Guarda el archivo como .shp file
             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
         }
         outputs['QuitarCampos'] = processing.run('native:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
@@ -63,17 +63,17 @@ class Model1(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Agregar campo que auto-incrementa 
+        # Agregar campo autoincremental mediante una nueva capa 
         alg_params = {
-            'FIELD_NAME': 'cid',
-            'GROUP_FIELDS': [''],
+            'FIELD_NAME': 'cid', # nombre del campo con valores autoincremental
+            'GROUP_FIELDS': [''],  #elige los campos 
             'INPUT': outputs['QuitarCampos']['OUTPUT'],
             'MODULUS': 0,
-            'SORT_ASCENDING': True,
-            'SORT_EXPRESSION': '',
-            'SORT_NULLS_FIRST': False,
+            'SORT_ASCENDING': True,  # controla el orden en el que se asignan valores  
+            'SORT_EXPRESSION': '', # ordena las entidades de la capa de forma global
+            'SORT_NULLS_FIRST': False, # establece que los valores nulos se cuentan al final
             'START': 1,
-            'OUTPUT': parameters['Counties']
+            'OUTPUT': parameters['Counties'] # capa vectorial con campo autoincremental
         }
         outputs['AgregarCampoQueAutoincrementa'] = processing.run('native:addautoincrementalfield', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Counties'] = outputs['AgregarCampoQueAutoincrementa']['OUTPUT']
@@ -86,10 +86,10 @@ class Model1(QgsProcessingAlgorithm):
         alg_params = {
             'COLUMN_PREFIX': '_',
             'INPUT': outputs['AgregarCampoQueAutoincrementa']['OUTPUT'],
-            'INPUT_RASTER': outputs['CombarReproyectar']['OUTPUT'],
-            'RASTER_BAND': 1,
-            'STATISTICS': [2],  # Media
-            'OUTPUT': parameters['Zonal']
+            'INPUT_RASTER': outputs['CombarReproyectar']['OUTPUT'], # capa ráster de entrada
+            'RASTER_BAND': 1, # elije una banda
+            'STATISTICS': [2],  # calcula la media
+            'OUTPUT': parameters['Zonal'] # capa de polígono de vector de salida
         }
         outputs['EstadsticasDeZona'] = processing.run('native:zonalstatisticsfb', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Zonal'] = outputs['EstadsticasDeZona']['OUTPUT']
