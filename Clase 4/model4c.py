@@ -1,15 +1,14 @@
 """
-Model exported as python.
-Name : model4c
-Group : 
-With QGIS : 32208
+Calculamos el área de los países.
+Se usa el shp de países: http://www.naturalearthdata.com/downloads/%2010m-cultural-vectors/10m-admin-0-countries/
 """
 
-from qgis.core import QgsProcessing
-from qgis.core import QgsProcessingAlgorithm
-from qgis.core import QgsProcessingMultiStepFeedback
-from qgis.core import QgsProcessingParameterFeatureSink
-from qgis.core import QgsCoordinateReferenceSystem
+from qgis.core import (QgsProcessing,
+                       QgsProcessingAlgorithm,
+                       QgsProcessingMultiStepFeedback,
+                       QgsProcessingParameterFeatureSink,
+                       QgsCoordinateReferenceSystem)
+
 import processing
 
 # se establecen los parametros iniciales para la creacion del modelo 4c
