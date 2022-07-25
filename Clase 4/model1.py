@@ -1,5 +1,10 @@
 # Preparamos el shapefile para el World Language Mappin System
+
+# Se utiliza el archivo langa.shp descargado de: worldgeodatasets.com/language
+
 # Output = clean.shp
+
+
 ´´´Con este codigo limpiamos la base langa.shp y modificamos variables para su posterior utilización'''
 
 from qgis.core import (QgsProcessing,
@@ -9,6 +14,7 @@ from qgis.core import (QgsProcessing,
 import processing
 
 # se establecen los parametros iniciales para la creacion del modelo 1
+
 class Model1(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
@@ -26,8 +32,10 @@ class Model1(QgsProcessingAlgorithm):
         outputs = {}
 
         # Filtra entidades de la capa de entrada y las redirige a una o varias salidas
+        # Arreglar la geometrias para procesar el shapefile
+        
         alg_params = {
-            'INPUT': 'Calculado_990564d8_40d0_4a61_97ed_24444685c928',  # capa entrante
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/langa/langa/langa.shp',  # capa entrante
             'OUTPUT_menor_a_11': parameters['Output_menor_a_11'] # las capas salientes con filtros
         }
         outputs['FiltroDeEntidad'] = processing.run('native:filter', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
@@ -38,13 +46,15 @@ class Model1(QgsProcessingAlgorithm):
             return {}
 
         # Calculadora de campos
+        # Creo una columna con el largo de la columna "NAME_PROP" solo para
+        # poder seleccionar segun el numero de caracteres
         alg_params = {
             'FIELD_LENGTH': 2, # longitud del campo
             'FIELD_NAME': 'length',  # nombre del campo para los resultados
             'FIELD_PRECISION': 0, # precisión del campo
             'FIELD_TYPE': 1,  #  tipo de campo en este caso entero
             'FORMULA': 'length(NAME_PROP)', # fórmula para calcular el resultado
-            'INPUT': 'Incrementado_4b4b4477_63a0_4701_85d0_dbbcf50acd3e',
+            'INPUT': outputs['AddAutoincrementalField']['OUTPUT'],
             'OUTPUT': parameters['Length'] # especificación de la capa saliente
         }
         outputs['CalculadoraDeCampos'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
@@ -61,7 +71,7 @@ class Model1(QgsProcessingAlgorithm):
             'FIELD_PRECISION': 0, # precisión del campo
             'FIELD_TYPE': 2,  # #  tipo de campo en este caso cadena
             'FORMULA': '"NAME_PROP"', # fórmula para calcular el resultado
-            'INPUT': 'menor_a_11_c3a98596_fbb0_4d42_b3cf_531f4126d936',
+            'INPUT': outputs['FeatureFilter']['OUTPUT_menor_a_11'],
             'OUTPUT': parameters['Field_calc'] # especificación de la capa saliente
         }
         outputs['CalculadoraDeCamposClone'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
@@ -74,7 +84,7 @@ class Model1(QgsProcessingAlgorithm):
         # # Quita las columnas nombradas de la forma '....' de la tabla
         alg_params = {
             'COLUMN': ['ID_ISO_A3','ID_ISO_A2','ID_FIPS','NAM_LABEL','NAME_PROP','NAME2','NAM_ANSI','CNT','C1','POP','LMP_POP1','G','LMP_CLASS','FAMILYPROP','FAMILY','langpc_km2','length'],
-            'INPUT': 'Calculado_1117a096_c00b_4dce_bfd4_23255054233d',
+            'INPUT': outputs['FieldCalculatorClone']['OUTPUT'],
             'OUTPUT': parameters['Wldsout']
         }
         outputs['QuitarCampos'] = processing.run('native:deletecolumn', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
