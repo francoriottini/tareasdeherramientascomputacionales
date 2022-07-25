@@ -1,14 +1,11 @@
-"""
-Model exported as python.
-Name : model1
-Group : 
-With QGIS : 32208
-"""
+# Preparamos el shapefile para el World Language Mappin System
+# Output = clean.shp
+´´´Con este codigo limpiamos la base langa.shp y modificamos variables para su posterior utilización'''
 
-from qgis.core import QgsProcessing
-from qgis.core import QgsProcessingAlgorithm
-from qgis.core import QgsProcessingMultiStepFeedback
-from qgis.core import QgsProcessingParameterFeatureSink
+from qgis.core import (QgsProcessing,
+                       QgsProcessingAlgorithm,
+                       QgsProcessingMultiStepFeedback,
+                       QgsProcessingParameterFeatureSink)
 import processing
 
 # se establecen los parametros iniciales para la creacion del modelo 1
