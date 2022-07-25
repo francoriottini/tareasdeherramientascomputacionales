@@ -305,12 +305,12 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - cent_lat
+        # Calculadora de campo
         alg_params = {
-            'FIELD_LENGTH': 10,
-            'FIELD_NAME': 'cent_lat',
-            'FIELD_PRECISION': 10,
-            'FIELD_TYPE': 0,  # Float
+            'FIELD_LENGTH': 10,  # longitud del campo 
+            'FIELD_NAME': 'cent_lat', # nombre del campo para los resultados
+            'FIELD_PRECISION': 10, # precisión del campo resultante
+            'FIELD_TYPE': 0,  # tipo de campo: float
             'FORMULA': "attribute($currentfeature, 'ycoord')",
             'INPUT': 'Extracted__attribute__3f6526dc_a44f_42eb_8490_c0e2b60738e1',
             'OUTPUT': parameters['Added_field_cent_lat']
@@ -322,7 +322,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from fixgeo_coastline
+        # Quita las columnas nombradas de la forma '....' de la tabla fixgeo_coastline
         alg_params = {
             'COLUMN': ['scalerank'],
             'INPUT': 'Fixed_geometries_19aef157_f33b_4792_8a27_efb167921eaa',
@@ -335,7 +335,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # v.distance
+        # v.distance. encuentra el elemento más cercano en el mapa vectorial 'hasta' para los elementos en el mapa vectorial 'desde'
         alg_params = {
             'GRASS_MIN_AREA_PARAMETER': 0.0001,
             'GRASS_OUTPUT_TYPE_PARAMETER': 0,  # auto
@@ -361,6 +361,7 @@ class Model4b(QgsProcessingAlgorithm):
         results['Nearout'] = outputs['Vdistance']['from_output']
         return results
 
+#define elementos
     def name(self):
         return 'model4b'
 
