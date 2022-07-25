@@ -12,7 +12,7 @@ from qgis.core import QgsProcessingParameterVectorDestination
 from qgis.core import QgsProcessingParameterFeatureSink
 import processing
 
-
+# se establecen los parametros iniciales para la creacion del modelo 4b
 class Model4b(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
@@ -39,16 +39,15 @@ class Model4b(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSink('Add_geo_coast', 'add_geo_coast', type=QgsProcessing.TypeVectorAnyGeometry, createByDefault=True, defaultValue=None))
 
     def processAlgorithm(self, parameters, context, model_feedback):
-        # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
-        # overall progress through the model
+        # Use una retroalimentación de varios pasos progreso del algoritmo secundario se ajustan para el progreso general a través del modelo.
         feedback = QgsProcessingMultiStepFeedback(21, model_feedback)
         results = {}
         outputs = {}
 
-        # Fix geometries - countries
+        # # Arregla geometrias. Crea una representación válida de una geometría no válidaa de los paises
         alg_params = {
-            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp',
-            'OUTPUT': parameters['Fixgeo_countries']
+            'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp', # capa de vector de entrada
+            'OUTPUT': parameters['Fixgeo_countries'] # especifica la capa vectorial saliente
         }
         outputs['FixGeometriesCountries'] = processing.run('native:fixgeometries', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Fixgeo_countries'] = outputs['FixGeometriesCountries']['OUTPUT']
@@ -57,7 +56,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from centroids_coas_joint
+        # Quita las columnas nombradas de la forma '....' de la tabla de centroids_coas_joint
         alg_params = {
             'COLUMN': ['featurecla','scalerank','LABELRANK','SOVEREIGNT','SOV_A3','ADM0_DIF','LEVEL','TYPE','TLC','ADM0_A3','GEOU_DIF','GEOUNIT','GU_A3','SU_DIF','SUBUNIT','SU_A3','BRK_DIFF','NAME','NAME_LONG','BRK_A3','BRK_NAME','BRK_GROUP','ABBREV','POSTAL','FORMAL_EN','FORMAL_FR','NAME_CIAWF','NOTE_ADM0','NOTE_BRK','NAME_SORT','NAME_ALT','MAPCOLOR7','MAPCOLOR8','MAPCOLOR9','MAPCOLOR13','POP_EST','POP_RANK','POP_YEAR','GDP_MD','GDP_YEAR','ECONOMY','INCOME_GRP','FIPS_10','ISO_A2','ISO_A2_EH','ISO_A3_EH','ISO_N3','ISO_N3_EH','UN_A3','WB_A2','WB_A3','WOE_ID','WOE_ID_EH','WOE_NOTE','ADM0_ISO','ADM0_DIFF','ADM0_TLC','ADM0_A3_US','ADM0_A3_FR','ADM0_A3_RU','ADM0_A3_ES','ADM0_A3_CN','ADM0_A3_TW','ADM0_A3_IN','ADM0_A3_NP','ADM0_A3_PK','ADM0_A3_DE','ADM0_A3_GB','ADM0_A3_BR','ADM0_A3_IL','ADM0_A3_PS','ADM0_A3_SA','ADM0_A3_EG','ADM0_A3_MA','ADM0_A3_PT','ADM0_A3_AR','ADM0_A3_JP','ADM0_A3_KO','ADM0_A3_VN','ADM0_A3_TR','ADM0_A3_ID','ADM0_A3_PL','ADM0_A3_GR','ADM0_A3_IT','ADM0_A3_NL','ADM0_A3_SE','ADM0_A3_BD','ADM0_A3_UA','ADM0_A3_UN','ADM0_A3_WB','CONTINENT','REGION_UN','SUBREGION','REGION_WB','NAME_LEN','LONG_LEN','ABBREV_LEN','TINY','HOMEPART','MIN_ZOOM','MIN_LABEL','MAX_LABEL','LABEL_X','LABEL_Y','NE_ID','WIKIDATAID','NAME_AR','NAME_BN','NAME_DE','NAME_EN','NAME_ES','NAME_FA','NAME_FR','NAME_EL','NAME_HE','NAME_HI','NAME_HU','NAME_ID','NAME_IT','NAME_JA','NAME_KO','NAME_NL','NAME_PL','NAME_PT','NAME_RU','NAME_SV','NAME_TR','NAME_UK','NAME_UR','NAME_VI','NAME_ZH','NAME_ZHT','FCLASS_ISO','TLC_DIFF','FCLASS_TLC','FCLASS_US','FCLASS_FR','FCLASS_RU','FCLASS_ES','FCLASS_CN','FCLASS_TW','FCLASS_IN','FCLASS_NP','FCLASS_PK','FCLASS_DE','FCLASS_GB','FCLASS_BR','FCLASS_IL','FCLASS_PS','FCLASS_SA','FCLASS_EG','FCLASS_MA','FCLASS_PT','FCLASS_AR','FCLASS_JP','FCLASS_KO','FCLASS_VN','FCLASS_TR','FCLASS_ID','FCLASS_PL','FCLASS_GR','FCLASS_IT','FCLASS_NL','FCLASS_SE','FCLASS_BD','FCLASS_UA','ADMIN_2','ISO_A3_2'],
             'INPUT': 'Joined_layer_52b79c0f_a990_4729_a223_ec167639eb97',
@@ -70,11 +69,11 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Add geometry attributes
+        # Agregar atributos de geometría. Calcula las propiedades geométricas de los objetos de una capa vectorial y las incluye en la capa resultado
         alg_params = {
-            'CALC_METHOD': 0,  # Layer CRS
+            'CALC_METHOD': 0,  # Cálculo de los parámetros a usar para las propiedades geométricas. 0 es SRC de la Capa
             'INPUT': 'Remaining_fields_77183d4e_408d_4e93_9406_14e51d89eaaf',
-            'OUTPUT': parameters['Add_geo_coast']
+            'OUTPUT': parameters['Add_geo_coast'] # Especificar la capa de salida
         }
         outputs['AddGeometryAttributes'] = processing.run('qgis:exportaddgeometrycolumns', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Add_geo_coast'] = outputs['AddGeometryAttributes']['OUTPUT']
@@ -83,15 +82,15 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - cat adjust
+        # Calculadora de campos. Abre la calculadora de campos
         alg_params = {
-            'FIELD_LENGTH': 4,
-            'FIELD_NAME': 'cat',
-            'FIELD_PRECISION': 3,
-            'FIELD_TYPE': 1,  # Integer
-            'FORMULA': "attribute($currentfeature, 'cat')-1",
+            'FIELD_LENGTH': 4, # longitud del campo
+            'FIELD_NAME': 'cat', # nombre del campo para los resultados
+            'FIELD_PRECISION': 3, # precisión del campo resultante
+            'FIELD_TYPE': 1,  # tipo de campo: Integer
+            'FORMULA': "attribute($currentfeature, 'cat')-1", # fórmula a emplear para calcular el resultado
             'INPUT': 'from_output_20c7bca6_b13b_4649_aaae_d80e976a889d',
-            'OUTPUT': parameters['Nearest_cat_adjust']
+            'OUTPUT': parameters['Nearest_cat_adjust'] # especificación de la capa saliente
         }
         outputs['FieldCalculatorCatAdjust'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Nearest_cat_adjust'] = outputs['FieldCalculatorCatAdjust']['OUTPUT']
@@ -100,11 +99,11 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Add geometry attributes
+        # Agregar atributos de geometría. Calcula las propiedades geométricas de los objetos de una capa vectorial y las incluye en la capa resultado.
         alg_params = {
-            'CALC_METHOD': 0,  # Layer CRS
+            'CALC_METHOD': 0,  # Cálculo de los parámetros a usar para las propiedades geométricas. 0 SRC de la Capa
             'INPUT': 'Centroids_f411d1fb_07a9_4b37_8c18_470aac5b6d64',
-            'OUTPUT': parameters['Centroids_w_coord']
+            'OUTPUT': parameters['Centroids_w_coord'] # Especificar la capa de salida
         }
         outputs['AddGeometryAttributes'] = processing.run('qgis:exportaddgeometrycolumns', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Centroids_w_coord'] = outputs['AddGeometryAttributes']['OUTPUT']
@@ -113,13 +112,13 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Extract by attribute
+        # Extraer por atributo. Crea dos capas vectoriales a partir de una capa de entrada: una contendrá solo entidades coincidentes mientras que la segunda contendrá todas las entidades no coincidentes.
         alg_params = {
-            'FIELD': 'distance',
+            'FIELD': 'distance', # campo de filtrado de la capa
             'INPUT': 'Vertices_1966fc2f_a721_4371_967d_fa6a4a4de95d',
-            'OPERATOR': 2,  # >
-            'VALUE': '0',
-            'OUTPUT': parameters['Extract_by_attribute']
+            'OPERATOR': 2,  # es >
+            'VALUE': '0', # valor a evaluar
+            'OUTPUT': parameters['Extract_by_attribute'] # especifica la capa vectorial saliente para la conincidencia de entidades
         }
         outputs['ExtractByAttribute'] = processing.run('native:extractbyattribute', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Extract_by_attribute'] = outputs['ExtractByAttribute']['OUTPUT']
@@ -128,15 +127,15 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - coast_lat
+        # Calculadora de campos - coast_lat
         alg_params = {
-            'FIELD_LENGTH': 10,
+            'FIELD_LENGTH': 10, # longitud del campo resultante
             'FIELD_NAME': 'coast_lat',
-            'FIELD_PRECISION': 10,
-            'FIELD_TYPE': 0,  # Float
-            'FORMULA': "attribute($currentfeature, 'ycoord')",
-            'INPUT': 'Added_geom_info_d84ade8a_3eba_4f89_ab7a_9023cf8e9951',
-            'OUTPUT': parameters['Added_field_coast_lat']
+            'FIELD_PRECISION': 10, # precisión del campo resultante
+            'FIELD_TYPE': 0,  # tipo de campo: float
+            'FORMULA': "attribute($currentfeature, 'ycoord')", # fórmula a emplear para calcular el resultado
+            'INPUT': 'Added_geom_info_d84ade8a_3eba_4f89_ab7a_9023cf8e9951', # capa en la que calcular
+            'OUTPUT': parameters['Added_field_coast_lat'] # especificación de la capa saliente
         }
         outputs['FieldCalculatorCoast_lat'] = processing.run('native:fieldcalculator', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Added_field_coast_lat'] = outputs['FieldCalculatorCoast_lat']['OUTPUT']
@@ -145,16 +144,16 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Join attributes by field value
+        # Unir atributos por valor de campo. Toma una capa de vector de entrada y crea una nueva capa de vector que es una versión extendida de la de entrada, con atributos adicionales en su tabla de atributos
         alg_params = {
-            'DISCARD_NONMATCHING': False,
-            'FIELD': 'cat',
-            'FIELDS_TO_COPY': [''],
-            'FIELD_2': 'cat',
-            'INPUT': 'output_87ba0daa_6155_4484_ad84_d4606bb3a0e8',
-            'INPUT_2': 'Remaining_fields_fe4bd62f_de5b_4307_83d4_507e2d9f957f',
-            'METHOD': 1,  # Take attributes of the first matching feature only (one-to-one)
-            'PREFIX': '',
+            'DISCARD_NONMATCHING': False,  # Compruebe si no desea conservar los objetos que no se pudieron unir
+            'FIELD': 'cat',  #Campo de la capa fuente a usar para la unión
+            'FIELDS_TO_COPY': [''],  # Seleccione los campos específicos que desea agregar. De forma predeterminada, se agregan todos los campos.
+            'FIELD_2': 'cat',  #Campo de la segunda capa (unión) que se utilizará para la combinación
+            'INPUT': 'output_87ba0daa_6155_4484_ad84_d4606bb3a0e8',  # Capa de vector de entrada
+            'INPUT_2': 'Remaining_fields_fe4bd62f_de5b_4307_83d4_507e2d9f957f',  # Capa con la tabla de atributos a unir
+            'METHOD': 1,  # El tipo de capa unida final. 1 : Tomar atributos de la primera entidad coincidente únicamente (uno a uno)
+            'PREFIX': '',  # Agregue un prefijo a los campos unidos para identificarlos fácilmente y evitar la colisión de nombres de campo
             'OUTPUT': parameters['Centroids_nearest_coast_distance_joined']
         }
         outputs['JoinAttributesByFieldValue'] = processing.run('native:joinattributestable', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
@@ -164,12 +163,12 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - cent_lon
+        # Calculadora de campo - cent_lon
         alg_params = {
-            'FIELD_LENGTH': 10,
-            'FIELD_NAME': 'cent_lon',
-            'FIELD_PRECISION': 10,
-            'FIELD_TYPE': 0,  # Float
+            'FIELD_LENGTH': 10, # longitud del campo resultante
+            'FIELD_NAME': 'cent_lon', # nombre del campo para los resultados
+            'FIELD_PRECISION': 10,  # precisión del campo resultante 
+            'FIELD_TYPE': 0,  # El tipo de campo: float 
             'FORMULA': "attribute($currentfeature, 'xcoord')",
             'INPUT': 'Calculated_5e74f333_fd0d_4a3e_a69c_230adb9a73a4',
             'OUTPUT': parameters['Added_field_cent_lon']
@@ -181,12 +180,12 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - coast_lon
+        # Calculadora de campo - coast_lon
         alg_params = {
-            'FIELD_LENGTH': 10,
-            'FIELD_NAME': 'coast_lon',
-            'FIELD_PRECISION': 10,
-            'FIELD_TYPE': 0,  # Float
+            'FIELD_LENGTH': 10, # longitud del campo resultante
+            'FIELD_NAME': 'coast_lon', # nombre del campo para los resultados
+            'FIELD_PRECISION': 10, # precisión del campo resultante 
+            'FIELD_TYPE': 0,  # tipo de campo: float 
             'FORMULA': "attribute($currentfeature, 'xcoord')",
             'INPUT': 'Calculated_8bfa95cb_8620_4b47_9b3d_721dbd91c1f0',
             'OUTPUT': parameters['Added_field_coast_lon']
@@ -198,7 +197,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from cent_lat_lon
+        # Quita las columnas nombradas de la forma '....' de la tabla cent_lat_lon
         alg_params = {
             'COLUMN': ['fid','cat','xcoord','ycoord','fid_2','cat_2','vertex_index','vertex_part','vertex_part','_index','angle'],
             'INPUT': 'Calculated_a3d7236e_5101_4f9e_b2c6_fdd1b2645f80',
@@ -211,7 +210,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from centroid_w_coord
+        # Quita las columnas nombradas de la forma '....' de la tabla centroid_w_coord
         alg_params = {
             'COLUMN': ['featurecla','scalerank','LABELRANK','SOVEREIGNT','SOV_A3','ADM0_DIF','LEVEL','TYPE','TLC','ADM0_A3','GEOU_DIF','GEOUNIT','GU_A3','SU_DIF','SUBUNIT','SU_A3','BRK_DIFF','NAME','NAME_LONG','BRK_A3','BRK_NAME','BRK_GROUP','ABBREV','POSTAL','FORMAL_EN','FORMAL_FR','NAME_CIAWF','NOTE_ADM0','NOTE_BRK','NAME_SORT','NAME_ALT','MAPCOLOR7','MAPCOLOR8','MAPCOLOR9','MAPCOLOR13','POP_EST','POP_RANK','POP_YEAR','GDP_MD','GDP_YEAR','ECONOMY','INCOME_GRP','FIPS_10','ISO_A2','ISO_A2_EH','ISO_A3_EH','ISO_N3','ISO_N3_EH','UN_A3','WB_A2','WB_A3','WOE_ID','WOE_ID_EH','WOE_NOTE','ADM0_ISO','ADM0_DIFF','ADM0_TLC','ADM0_A3_US','ADM0_A3_FR','ADM0_A3_RU','ADM0_A3_ES','ADM0_A3_CN','ADM0_A3_TW','ADM0_A3_IN','ADM0_A3_NP','ADM0_A3_PK','ADM0_A3_DE','ADM0_A3_GB','ADM0_A3_BR','ADM0_A3_IL','ADM0_A3_PS','ADM0_A3_SA','ADM0_A3_EG','ADM0_A3_MA','ADM0_A3_PT','ADM0_A3_AR','ADM0_A3_JP','ADM0_A3_KO','ADM0_A3_VN','ADM0_A3_TR','ADM0_A3_ID','ADM0_A3_PL','ADM0_A3_GR','ADM0_A3_IT','ADM0_A3_NL','ADM0_A3_SE','ADM0_A3_BD','ADM0_A3_UA','ADM0_A3_UN','ADM0_A3_WB','CONTINENT','REGION_UN','SUBREGION','REGION_WB','NAME_LEN','LONG_LEN','ABBREV_LEN','TINY','HOMEPART','MIN_ZOOM','MIN_LABEL','MAX_LABEL','LABEL_X','LABEL_Y','NE_ID','WIKIDATAID','NAME_AR','NAME_BN','NAME_DE','NAME_EN','NAME_ES','NAME_FA','NAME_FR','NAME_EL','NAME_HE','NAME_HI','NAME_HU','NAME_ID','NAME_IT','NAME_JA','NAME_KO','NAME_NL','NAME_PL','NAME_PT','NAME_RU','NAME_SV','NAME_TR','NAME_UK','NAME_UR','NAME_VI','NAME_ZH','NAME_ZHT','FCLASS_ISO','TLC_DIFF','FCLASS_TLC','FCLASS_US','FCLASS_FR','FCLASS_RU','FCLASS_ES','FCLASS_CN','FCLASS_TW','FCLASS_IN','FCLASS_NP','FCLASS_PK','FCLASS_DE','FCLASS_GB','FCLASS_BR','FCLASS_IL','FCLASS_PS','FCLASS_SA','FCLASS_EG','FCLASS_MA','FCLASS_PT','FCLASS_AR','FCLASS_JP','FCLASS_KO','FCLASS_VN','FCLASS_TR','FCLASS_ID','FCLASS_PL','FCLASS_GR','FCLASS_IT','FCLASS_NL','FCLASS_SE','FCLASS_BD','FCLASS_UA','ADMIN_2','ISO_A3_2'],
             'INPUT': 'Added_geom_info_c32036b7_cda3_4cb3_a11b_3714a82b9b00',
@@ -224,17 +223,17 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Join attributes by field value - centroids y coast
+        # Unir atributos por valor de campo. Toma una capa de vector de entrada y crea una nueva capa de vector que es una versión extendida de la de entrada, con atributos adicionales en su tabla de atributos. - centroids y coast
         alg_params = {
-            'DISCARD_NONMATCHING': False,
-            'FIELD': 'ISO_A3',
-            'FIELDS_TO_COPY': [''],
-            'FIELD_2': 'ISO_A3',
-            'INPUT': 'Remaining_fields_8331b36f_9867_40fd_8505_52df796da935',
-            'INPUT_2': 'Remaining_fields_b30e4b15_f3e6_4939_ac58_56d84622efde',
-            'METHOD': 1,  # Take attributes of the first matching feature only (one-to-one)
+            'DISCARD_NONMATCHING': False,  #Compruebe si no desea conservar los objetos que no se pudieron unir
+            'FIELD': 'ISO_A3',  #Campo de la capa fuente a usar para la unión
+            'FIELDS_TO_COPY': [''],  #Seleccione los campos específicos que desea agregar. De forma predeterminada, se agregan todos los campos.
+            'FIELD_2': 'ISO_A3',  #Campo de la segunda capa (unión) que se utilizará para la combinación El tipo de campo debe ser igual (o compatible) con el tipo de campo de la tabla de entrada.
+            'INPUT': 'Remaining_fields_8331b36f_9867_40fd_8505_52df796da935',  #Capa de vector de entrada
+            'INPUT_2': 'Remaining_fields_b30e4b15_f3e6_4939_ac58_56d84622efde',  #Capa con la tabla de atributos a unir
+            'METHOD': 1,  # El tipo de capa unida final: 1 — Tomar atributos de la primera entidad coincidente únicamente (uno a uno)
             'PREFIX': '',
-            'OUTPUT': parameters['Centroids_nearest_coast_joined']
+            'OUTPUT': parameters['Centroids_nearest_coast_joined'] #  Especifica la capa vectorial saliente para la unión
         }
         outputs['JoinAttributesByFieldValueCentroidsYCoast'] = processing.run('native:joinattributestable', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Centroids_nearest_coast_joined'] = outputs['JoinAttributesByFieldValueCentroidsYCoast']['OUTPUT']
@@ -243,7 +242,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Fix geometries - coastline
+        # Arregla geometria. Crea una representación válida de una geometría no válida - coastline
         alg_params = {
             'INPUT': 'C:/Users/Franco/Desktop/UDESA/Herramientas computacionales/Clase 4/input/ne_10m_coastline/ne_10m_coastline.shp',
             'OUTPUT': parameters['Fixgeo_coastline']
@@ -255,11 +254,11 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Centroids
+        # Centroides. Crea una nueva capa de puntos, con puntos representado los centroides de las geometrías de la capa de entrada.
         alg_params = {
-            'ALL_PARTS': False,
-            'INPUT': outputs['FixGeometriesCountries']['OUTPUT'],
-            'OUTPUT': parameters['Country_centroids']
+            'ALL_PARTS': False, # Si es verdadero (marcado), un centroide puede ser creado para cada parte de la geometría
+            'INPUT': outputs['FixGeometriesCountries']['OUTPUT'], # Capa de vector de entrada
+            'OUTPUT': parameters['Country_centroids'] # Especifica la capa de salida (centroide)
         }
         outputs['Centroids'] = processing.run('native:centroids', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Country_centroids'] = outputs['Centroids']['OUTPUT']
@@ -268,7 +267,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from coast_lon
+        # Quita las columnas nombradas de la forma '....' de la tabla coast_lon
         alg_params = {
             'COLUMN': ['xcoord','ycoord'],
             'INPUT': 'Calculated_ea5aa226_0b17_4cfa_b2e7_1a89b8a851ad',
@@ -281,10 +280,10 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Extract vertices
+        # Extraer vértices. Toma una capa vectorial y genera una capa de puntos con puntos representando los vértices en las geometrías de entrada.
         alg_params = {
-            'INPUT': 'Joined_layer_9795745b_6353_4bdf_addf_9e2c5a4aec10',
-            'OUTPUT': parameters['Extract_vertices']
+            'INPUT': 'Joined_layer_9795745b_6353_4bdf_addf_9e2c5a4aec10',  # Capa de vector de entrada
+            'OUTPUT': parameters['Extract_vertices']  # Especifica la capa vectorial saliente
         }
         outputs['ExtractVertices'] = processing.run('native:extractvertices', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         results['Extract_vertices'] = outputs['ExtractVertices']['OUTPUT']
@@ -293,7 +292,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) from nearest_cat_adjust
+        #  Quita las columnas nombradas de la forma '....' de la tabla nearest_cat_adjust
         alg_params = {
             'COLUMN': ['xcoord','ycoord'],
             'INPUT': 'Calculated_c9dd1acd_cc82_4587_a498_b810cfb65a3d',
