@@ -1,5 +1,7 @@
 # Preparamos el agricultural suitability raster
 
+# Se utiliza el raster de: https://sage.nelson.wisc.edu/?incdataset=Suitability%20for%20Agriculture
+
 from qgis.core import (QgsProcessing,
                        QgsProcessingAlgorithm,
                        QgsProcessingMultiStepFeedback,
