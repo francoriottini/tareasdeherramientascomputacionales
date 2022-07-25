@@ -1,14 +1,16 @@
-"""
-Model exported as python.
-Name : model4a
-Group : 
-With QGIS : 32208
-"""
+'''
 
-from qgis.core import QgsProcessing
-from qgis.core import QgsProcessingAlgorithm
-from qgis.core import QgsProcessingMultiStepFeedback
-from qgis.core import QgsProcessingParameterFeatureSink
+Generamos la cantidad de idiomas por país, distancia y áreas, usando el WLMS del model1 e 
+intersecando con el shp de países.
+Se utiliza el archivo langa.shp descargado de: worldgeodatasets.com/language
+y también se utiliza el shp de: http://www.naturalearthdata.com/downloads/%2010m-cultural-vectors/10m-admin-0-countries/
+
+'''
+from qgis.core import (QgsProcessing,
+                       QgsProcessingAlgorithm,
+                       QgsProcessingMultiStepFeedback,
+                       QgsProcessingParameterFeatureSink)
+
 import processing
 
 # se establecen los parametros iniciales para la creacion del modelo 4a
