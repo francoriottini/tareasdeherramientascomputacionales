@@ -20,8 +20,7 @@ class Model4a(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSink('Intersection', 'intersection', type=QgsProcessing.TypeVectorAnyGeometry, createByDefault=True, defaultValue=None))
 
     def processAlgorithm(self, parameters, context, model_feedback):
-        # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
-        # overall progress through the model
+        # Use una retroalimentación de varios pasos progreso del algoritmo secundario se ajustan para el progreso general a través del modelo.
         feedback = QgsProcessingMultiStepFeedback(4, model_feedback)
         results = {}
         outputs = {}
