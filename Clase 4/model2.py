@@ -1,15 +1,10 @@
-"""
-Model exported as python.
-Name : model2
-Group : 
-With QGIS : 32208
-"""
+# Preparamos el agricultural suitability raster
 
-from qgis.core import QgsProcessing
-from qgis.core import QgsProcessingAlgorithm
-from qgis.core import QgsProcessingMultiStepFeedback
-from qgis.core import QgsProcessingParameterRasterDestination
-from qgis.core import QgsCoordinateReferenceSystem
+from qgis.core import (QgsProcessing,
+                       QgsProcessingAlgorithm,
+                       QgsProcessingMultiStepFeedback,
+                       QgsProcessingParameterRasterDestination,
+                       QgsCoordinateReferenceSystem)
 import processing
 
 # se establecen los parametros iniciales para la creacion del modelo 2
@@ -24,7 +19,7 @@ class Model2(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
 
-        # Reproyecta una capa vectorial en un SRC diferente
+        # Reproyectamos una capa vectorial en un SRC diferente
         alg_params = {
             'DATA_TYPE': 0,  # Usar el tipo de datos de la capa de entrada
             'EXTRA': '',
@@ -47,7 +42,7 @@ class Model2(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Extrae la proyección
+        # Extraemos la proyección
         alg_params = {
             'INPUT': outputs['CombarReproyectar']['OUTPUT'],
             'PRJ_FILE_CREATE': True
