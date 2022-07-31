@@ -170,12 +170,13 @@ pb4
 #Activity B:Using faceting to understand data
 #MODIFICADO
 #Queremos ver la relacion entre el amount del loan y las categorias de credito.
-ggplot(df3s, aes(x = loan_amnt, fill = grade , colour = grade)) + 
-  geom_histogram(colour = "black", lwd = 0.75, linetype = 1, alpha = 0.5, position = "identity")+
-  labs(title='Histogram by grade (debt calification)', 
-       subtitle='Loan amount',
-       x='Loan amount', y='Count')+ 
-  theme(axis.title.x = element_text(size=10,color="black",face="bold",angle=0))
+ggplot(df3s, aes(x=grade,y=loan_amnt)) + 
+  geom_jitter(aes(color = grade), size = 1, alpha = 0.7)+
+  geom_boxplot(aes(color = grade), alpha = 0.5)+
+  xlab('Grade') + 
+  ylab('Loan amount') +
+  ggtitle('Loan amount according to grade') + 
+  theme_minimal()
 
 
 #Activity B:Using faceting to understand data
