@@ -130,13 +130,14 @@ ggplot(df,aes(x=gdp_per_capita)) +
        x='GDP per capita', y='Electricity consumption per capita')+ 
   theme(axis.title.x = element_text(size=10,color="black",face="bold",angle=0))
 
-##
+##MODIFICADO
+#Comparamos electricity consumption per capita and GDP per capita
 ggplot(df, aes(x =gdp_per_capita , y=Electricity_consumption_per_capita, color=Country)) +
-  geom_line(linetype = 3,size=2,
+  geom_line(linetype = 1,size=0.9,
              lwd = 2.1)+
 labs(title='Line plot by country', 
      x='GDP per capita', y='Electricity consumption per capita')+ 
-  theme(axis.title.x = element_text(size=10,color="black",face="bold",angle=0))
+  theme(axis.title.x = element_text(size=9,color="black",face="bold",angle=0))
 
 
 ##MODIFICADO
