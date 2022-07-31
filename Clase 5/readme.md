@@ -1,0 +1,1 @@
+QGIS, R and STATA.
