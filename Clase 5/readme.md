@@ -8,3 +8,6 @@ En la carpeta "Tarea 2" incluimos los archivos relativos a la tarea:
 * Crear mapa de thefts de Londres con ggplot.
 * Crear mapa de thefts de Londres con tmap.
 * Crear mapa de thefts de Londres con spmap.
+-----------
+
+In the "pdf" file we include a brief description about both homeworks
