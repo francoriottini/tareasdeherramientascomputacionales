@@ -9,7 +9,7 @@ Mapas:
 
 Matrices OD:
 ---------
-Para las matrices OD inicialmente, al igual que antes, trabajamos con una tolerancia de 10, pero debido a la impresición encontrada decidimos trabajar con tolerancias de 1 y 0,1.
+Para las matrices OD inicialmente, al igual que con los shapefiles, trabajamos con una tolerancia de 10, pero debido a la impresición encontrada decidimos trabajar con tolerancias de 1 y 0,1.
 Matrices OD:
 - Matriz OD con Tolerancia = 10: ODMatrix_10tolerance.csv
 - Matriz OD con Tolerancia = 1: ODMatrix_1tolerance.csv
