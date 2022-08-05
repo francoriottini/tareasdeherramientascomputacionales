@@ -14,3 +14,8 @@ Matrices OD:
 - Matriz OD con Tolerancia = 10: ODMatrix_10tolerance.csv
 - Matriz OD con Tolerancia = 1: ODMatrix_1tolerance.csv
 - Matriz OD con Tolerancia = 0,1: ODMatrix_0,1tolerance.csv
+
+Corrientes Georreferenciado:
+--------------------------
+Shapefile con las capitales de los departamentos de la provincia de corrientes:
+CorrientesGeorreferenced.shp
