@@ -4,7 +4,7 @@ Franco Riottini Depetris y Tomás Peruchin
 
 Mapas:
 --------------
-- Mapa con departamentos y rutas de Corrientes: Mapa_Corrientes.png
+- Mapa con departamentos y rutas de Corrientes: Mapa_Corrientes(2).png
 - Mapa con ruta más rápida entre los departamentos de Curuzú Cuatia y San Miguel: Ruta_Curuzu_SanMiguel.png
 
 Shapefiles:
