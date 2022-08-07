@@ -1,6 +1,6 @@
 Files corresponding to homework 6
 -------------------------------
-Franco Riottini Depetris y Tomás Peruchin
+Franco Riottini Depetris y Tomas Peruchin
 
 Mapas:
 --------------
