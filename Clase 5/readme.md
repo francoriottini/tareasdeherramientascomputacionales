@@ -1,13 +1,13 @@
 QGIS, R and STATA.
 -----------
-En la carpeta "Tarea 1" incluimos los archivos relativos a la misma, cumplimentando con la siguiente consigna:
-"A partir de 3 gráficos que hayamos hecho en el video 1, "corregirlos" para que cumplan con los principios de Schwabish vistos en la primera parte de la clase"
+In the "Tarea 1" folder we include the files related to homework, completing the following instructions:
+"From 3 graphs that we have made in video 1, "correct" them so that they comply with the Schwabish principles seen in the first part of the class"
 
-En la carpeta "Tarea 2" incluimos los archivos relativos a la tarea:
+In the "Tarea 2" folder we include the files related to the task:
 
-* Crear mapa de thefts de Londres con ggplot.
-* Crear mapa de thefts de Londres con tmap.
-* Crear mapa de thefts de Londres con spmap.
+* Create London thefts map with ggplot.
+* Create London thefts map with tmap.
+* Create London thefts map with spmap.
 -----------
 
 In the "pdf" file we include a brief description about both homeworks
