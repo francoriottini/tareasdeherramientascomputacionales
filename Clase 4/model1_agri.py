@@ -1,8 +1,12 @@
+# Preparamos el shapefile para el World Language Mappin System
+
+# Se utiliza el archivo langa.shp descargado de: worldgeodatasets.com/language
+
+# Output = clean.shp
+
+
 """
-Model exported as python.
-Name : model1
-Group : 
-With QGIS : 32208
+Con este codigo limpiamos la base langa.shp y modificamos variables para su posterior utilización
 """
 
 from qgis.core import QgsProcessing
