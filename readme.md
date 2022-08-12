@@ -1,10 +1,10 @@
-Tareas de Herramientas Computacionales
+## Tareas de Herramientas Computacionales
 -------------------------------------------
-Computational tools for scientific research
+## Computational tools for scientific research
 -------------------------------------------
-Peruchin Tomás & Riottini Depetris Franco
+### Peruchin Tomás & Riottini Depetris Franco
 --------------------------------
-ACTUALIZACIÓN: En releases se encuentran archivos con un tamaño mayor a 25mb.
+#### ACTUALIZACIÓN: En releases se encuentran archivos con un tamaño mayor a 25mb.
 ------
 En este folder se encuentran los archivos adjuntos referentes al curso de la maestria en economia de UdeSA: 2022 PE1307 - HERRAMIENTAS COMPUTACIONALES PARA INVESTIGACIÓN dictado por la profesora PhD Amelia Gibbons (https://mgibbons3.github.io/).
 
